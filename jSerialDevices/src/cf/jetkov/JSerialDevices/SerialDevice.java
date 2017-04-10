@@ -1,5 +1,7 @@
 package cf.jetkov.JSerialDevices;
 
+import java.util.NoSuchElementException;
+
 import com.fazecast.jSerialComm.*;
 
 abstract class SerialDevice {
@@ -21,21 +23,12 @@ abstract class SerialDevice {
 	}
 
 	public SerialDevice(String description) {
-		serialPort = getPortMatching(description);
-		if (serialPort == null) {
-			System.err.println("ERROR: Port not found!");
-			System.exit(1);
-		}
+		setPortMatching(description);
 	}
 
 	public SerialDevice(String description, int baudRate) {
-		serialPort = getPortMatching(description);
-		if (serialPort == null) {
-			System.err.println("ERROR: Port not found! Cannot set baud rate.");
-		} else {
-			this.baudRate = baudRate;
-			serialPort.setBaudRate(this.baudRate);
-		}
+		setPortMatching(description);
+		setBaudRate(baudRate);
 	}
 
 	public SerialPort getPortMatching(String description) {
@@ -47,13 +40,24 @@ abstract class SerialDevice {
 				return port;
 			}
 		}
-		System.err.println("No port with description matching '" + description + "' found!");
-		return null;
+		throw new NoSuchElementException("No port with description matching '" + description + "' found!");
+	}
+	
+	public void setPortMatching(String description) {
+		try {
+			serialPort = getPortMatching(description);
+		} catch (NoSuchElementException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public void setBaudRate(int baudRate) {
-		this.baudRate = baudRate;
-		serialPort.setBaudRate(this.baudRate);
+		try {
+			this.baudRate = baudRate;
+			serialPort.setBaudRate(this.baudRate);
+		} catch (NullPointerException e) {
+			System.err.println("ERROR: Port not found! Cannot set baud rate.");
+		}
 	}
 
 	public int getBaudRate() {
@@ -70,11 +74,13 @@ abstract class SerialDevice {
 
 	public boolean openPort() {
 		if (serialPort.openPort()) {
+
 			try {
-				Thread.sleep(100);
+				Thread.sleep(50);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
 			return true;
 		} else {
 			System.out.println("Error Connecting! Try Another port.");
@@ -88,10 +94,8 @@ abstract class SerialDevice {
 
 	public abstract String serialRead();
 
-	public abstract String serialRead(int lines);
+	public abstract String serialRead(int tokens);
 
 	public abstract void serialWrite(String strng);
-
-	public abstract void serialWrite(char chr);
 
 }
