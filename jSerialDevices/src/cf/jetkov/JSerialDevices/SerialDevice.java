@@ -75,4 +75,8 @@ abstract class SerialDevice {
 	public void closePort() {
 		serialPort.closePort();
 	}
+	
+	public abstract void serialWrite(String strng);
+	
+	public abstract void serialWrite(char chr);
 }
