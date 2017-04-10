@@ -6,22 +6,22 @@ import java.util.Scanner;
 import com.fazecast.jSerialComm.*;
 
 
-public class Arduino {
+public class ExampleDevice {
 	private SerialPort comPort;
 	private String portDescription;
 	private int baud_rate;
 	
-	public Arduino() {
+	public ExampleDevice() {
 		//empty constructor if port undecided
 	}
 	
-	public Arduino(String portDescription) {
+	public ExampleDevice(String portDescription) {
 		//make sure to set baud rate after
 		this.portDescription = portDescription;
 		comPort = SerialPort.getCommPort(this.portDescription);
 	}
 	
-	public Arduino(String portDescription, int baud_rate) {
+	public ExampleDevice(String portDescription, int baud_rate) {
 		//preferred constructor
 		this.portDescription = portDescription;
 		comPort = SerialPort.getCommPort(this.portDescription);
