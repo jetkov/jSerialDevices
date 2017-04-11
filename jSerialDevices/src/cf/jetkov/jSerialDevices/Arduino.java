@@ -18,12 +18,12 @@ public class Arduino extends SerialDevice {
 		super("(arduino|ACM)", baudRate);
 		serialPort = getSerialPort();
 	}
-	
+
 	public Arduino(String keyword) {
 		super(keyword);
 		serialPort = getSerialPort();
 	}
-	
+
 	public Arduino(String keyword, int baudRate) {
 		super(keyword, baudRate);
 		serialPort = getSerialPort();
@@ -46,14 +46,13 @@ public class Arduino extends SerialDevice {
 
 	@Override
 	public String serialRead(int tokens) {
-		serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
+		//serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
 
 		String recieved = "";
 		Scanner scan = new Scanner(serialPort.getInputStream());
 
 		try {
 			for (int i = 0; i <= tokens && scan.hasNext(); i++) {
-				System.out.println(scan.next());
 				recieved += (scan.next() + "\n");
 			}
 			scan.close();
@@ -88,7 +87,7 @@ public class Arduino extends SerialDevice {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 		PrintWriter pout = new PrintWriter(serialPort.getOutputStream());
 		pout.write(c);
 		pout.flush();

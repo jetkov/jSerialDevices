@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 import com.fazecast.jSerialComm.*;
 
+import cf.jetkov.jSerialDevices.Arduino;
+
 
 public class ExampleDevice {
 	private SerialPort comPort;
@@ -137,5 +139,14 @@ public class ExampleDevice {
 		PrintWriter pout = new PrintWriter(comPort.getOutputStream());pout.write(c);
 		pout.flush();
 		try{Thread.sleep(delay);}catch(Exception e){}
+	}
+	
+	public static void main(String[] args) {
+		ExampleDevice Arduino = new ExampleDevice("/dev/ttyACM6", 19200); //enter the port name here, and ensure that Arduino is connected, otherwise exception will be thrown.
+		Arduino.openPort();
+		while (true) {
+			System.out.println(Arduino.serialRead(1));
+		}
+		//Arduino.closePort();
 	}
 }
