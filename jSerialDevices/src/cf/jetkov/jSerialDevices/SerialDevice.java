@@ -30,7 +30,7 @@ public abstract class SerialDevice {
 	 * default baud rate of 9600 baud.
 	 * 
 	 * @param serialPort
-	 *            A serial port to be assigned to the device
+	 *            - A serial port to be assigned to the device
 	 */
 	public SerialDevice(SerialPort serialPort) {
 		this.serialPort = serialPort;
@@ -40,9 +40,9 @@ public abstract class SerialDevice {
 	 * Creates a new serial device with a given serial port and baud rate.
 	 * 
 	 * @param serialPort
-	 *            A serial port to be assigned to the device
+	 *            - A serial port to be assigned to the device
 	 * @param baudRate
-	 *            The desired baud rate for this serial port
+	 *            - The desired baud rate for this serial port
 	 */
 	public SerialDevice(SerialPort serialPort, int baudRate) {
 		this.serialPort = serialPort;
@@ -50,26 +50,24 @@ public abstract class SerialDevice {
 	}
 
 	/**
-	 * Creates a new serial device. The serial device's port will be attempted to be set
-	 * by matching a descriptive port name to the keyword given here. See
+	 * Creates a new serial device with a keyword-matched port. See
 	 * {@link #getPortMatching(String descriptor)}.
 	 * 
 	 * @param keyword
-	 *            A keyword of a serial port description to find a match with
+	 *            - A keyword to match to a serial port description
 	 */
 	public SerialDevice(String keyword) {
 		setPortMatching(keyword);
 	}
 
 	/**
-	 * Creates a new serial device with a keyword-matched port and a given baud rate. The
-	 * serial device's port will be attempted to be set by matching a descriptive port
-	 * name to the keyword given here. See {@link #getPortMatching(String descriptor)}.
+	 * Creates a new serial device with a keyword-matched port and a given baud rate. See
+	 * {@link #getPortMatching(String descriptor)}.
 	 * 
 	 * @param keyword
-	 *            A keyword of a serial port description to find a match with
+	 *            - A keyword to match to a serial port description
 	 * @param baudRate
-	 *            The desired baud rate for this serial port
+	 *            - The desired baud rate for this serial port
 	 */
 	public SerialDevice(String keyword, int baudRate) {
 		setPortMatching(keyword);
@@ -78,14 +76,16 @@ public abstract class SerialDevice {
 
 	/**
 	 * Iterates through a list of all available serial ports on the machine, checking the
-	 * descriptive port name of each one for a match with the given keyword.
+	 * descriptive port name of each one for a match with the given keyword. Useful for
+	 * cases where the port may change or for multi-OS support.
 	 * 
 	 * @param keyword
-	 *            - A keyword of a serial port description to find a match with. The keyword
-	 *            can be simply a word or few identifying characters that could be found
-	 *            within the port description. Match-checking is case insensitive.
-	 * @return The first serial port found with a matching description.
-	 * @throws NoSuchElementException if no matching port is found.
+	 *            - A keyword of a serial port description to find a match with. The
+	 *            keyword can be simply a word or few identifying characters that could be
+	 *            found within the port description. Match-checking is case insensitive.
+	 * @return The first serial port found with a matching description
+	 * @throws NoSuchElementException
+	 *             if no matching port is found.
 	 */
 	public SerialPort getPortMatching(String keyword) {
 		String descriptivePortName;
@@ -93,22 +93,36 @@ public abstract class SerialDevice {
 		for (SerialPort port : SerialPort.getCommPorts()) {
 			descriptivePortName = port.getDescriptivePortName();
 			if (descriptivePortName.matches("(?i).*" + keyword + ".*")) {
-				System.out.println("Found " + descriptivePortName +".");
+				System.out.println("Found " + descriptivePortName + ".");
 				return port;
 			}
 		}
-		
+
 		throw new NoSuchElementException("ERROR: No port with description matching '" + keyword + "' found!");
 	}
 
-	public void setPortMatching(String description) {
+	/**
+	 * Sets the device's serial port to a machine port with a description matching the
+	 * given keyword. See {@link #getPortMatching(String descriptor)}.
+	 * 
+	 * @param keyword
+	 *            - A keyword to match to a serial port description
+	 */
+	public void setPortMatching(String keyword) {
 		try {
-			serialPort = getPortMatching(description);
+			serialPort = getPortMatching(keyword);
 		} catch (NoSuchElementException e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
+	/**
+	 * Sets the baud rate of the serial device and port to the specified value. The
+	 * default baud rate is 9600 baud.
+	 * 
+	 * @param baudRate
+	 *            - The desired baud rate for this serial port.
+	 */
 	public void setBaudRate(int baudRate) {
 		try {
 			this.baudRate = baudRate;
@@ -118,18 +132,36 @@ public abstract class SerialDevice {
 		}
 	}
 
+	/**
+	 * @return The baud rate of the serial device's port.
+	 */
 	public int getBaudRate() {
 		return baudRate;
 	}
 
+	/**
+	 * Set's the serial device's serial port to the given one.
+	 * 
+	 * @param serialPort
+	 *            A serial port the device is connected to.
+	 */
 	public void setSerialPort(SerialPort serialPort) {
 		this.serialPort = serialPort;
 	}
 
+	/**
+	 * @return The serial device's current serial port.
+	 */
 	public SerialPort getSerialPort() {
 		return serialPort;
 	}
 
+	/**
+	 * Attempts to open the serial port of the device.
+	 * 
+	 * @return True of the port has been opened successfully or was already open. False if
+	 *         the port could not be opened (possibly wrong port, port is busy, etc.).
+	 */
 	public boolean openPort() {
 		if (serialPort.openPort()) {
 
@@ -146,14 +178,35 @@ public abstract class SerialDevice {
 		}
 	}
 
+	/**
+	 * Closes the serial device's serial port.
+	 */
 	public void closePort() {
 		serialPort.closePort();
 	}
 
+	/**
+	 * Reads in a String from the serial device.
+	 * 
+	 * @return A recieved String
+	 */
 	public abstract String serialRead();
 
+	/**
+	 * Reads in a given number of tokens from the serial device.
+	 * 
+	 * @param tokens
+	 *            - The number of tokens to get
+	 * @return A String containing at most the specified number of tokens.
+	 */
 	public abstract String serialRead(int tokens);
 
+	/**
+	 * Writes a String to the serial device.
+	 * 
+	 * @param strng
+	 *            - A String to send to the device
+	 */
 	public abstract void serialWrite(String strng);
 
 }
