@@ -10,12 +10,22 @@ public class Arduino extends SerialDevice {
 	SerialPort serialPort;
 
 	public Arduino() {
-		super("arduino");
+		super("(arduino|ACM)");
 		serialPort = getSerialPort();
 	}
 
 	public Arduino(int baudRate) {
-		super("arduino", baudRate);
+		super("(arduino|ACM)", baudRate);
+		serialPort = getSerialPort();
+	}
+	
+	public Arduino(String keyword) {
+		super(keyword);
+		serialPort = getSerialPort();
+	}
+	
+	public Arduino(String keyword, int baudRate) {
+		super(keyword, baudRate);
 		serialPort = getSerialPort();
 	}
 
@@ -43,6 +53,7 @@ public class Arduino extends SerialDevice {
 
 		try {
 			for (int i = 0; i <= tokens && scan.hasNext(); i++) {
+				System.out.println(scan.next());
 				recieved += (scan.next() + "\n");
 			}
 			scan.close();

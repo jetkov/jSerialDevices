@@ -91,7 +91,7 @@ public abstract class SerialDevice {
 		String descriptivePortName;
 
 		for (SerialPort port : SerialPort.getCommPorts()) {
-			descriptivePortName = port.getDescriptivePortName();
+			descriptivePortName = port.getDescriptivePortName() + ": " + port.getSystemPortName();
 			if (descriptivePortName.matches("(?i).*" + keyword + ".*")) {
 				System.out.println("Found " + descriptivePortName + ".");
 				return port;

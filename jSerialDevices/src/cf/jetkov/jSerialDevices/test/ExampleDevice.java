@@ -31,7 +31,7 @@ public class ExampleDevice {
 	
 	
 	
-	public boolean openConnection(){
+	public boolean openPort(){
 		if(comPort.openPort()){
 			try {Thread.sleep(100);} catch(Exception e){}
 			return true;
@@ -42,7 +42,7 @@ public class ExampleDevice {
 		}
 	}
 	
-	public void closeConnection() {
+	public void closePort() {
 		comPort.closePort();
 	}
 	

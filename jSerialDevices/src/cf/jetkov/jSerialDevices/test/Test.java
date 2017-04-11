@@ -10,9 +10,5 @@ public class Test {
 			System.out.println(port.getSystemPortName());
 			System.out.println();
 		}
-		SerialPort port = SerialPort.getCommPort("COM1");
-		System.out.println(port.getDescriptivePortName());
-		System.out.println(port.getSystemPortName());
-		System.out.println();
 	}
 }
