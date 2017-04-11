@@ -26,21 +26,21 @@ public abstract class SerialDevice {
 	}
 
 	/**
-	 * Creates a new serial device. A new serial port has a default baud rate of 9600
-	 * baud.
+	 * Creates a new serial device with a given serial port. A new serial port has a
+	 * default baud rate of 9600 baud.
 	 * 
 	 * @param serialPort
-	 *            A serial port
+	 *            A serial port to be assigned to the device
 	 */
 	public SerialDevice(SerialPort serialPort) {
 		this.serialPort = serialPort;
 	}
 
 	/**
-	 * Creates a new serial device.
+	 * Creates a new serial device with a given serial port and baud rate.
 	 * 
 	 * @param serialPort
-	 *            A serial port
+	 *            A serial port to be assigned to the device
 	 * @param baudRate
 	 *            The desired baud rate for this serial port
 	 */
@@ -49,26 +49,56 @@ public abstract class SerialDevice {
 		setBaudRate(baudRate);
 	}
 
-	public SerialDevice(String description) {
-		setPortMatching(description);
+	/**
+	 * Creates a new serial device. The serial device's port will be attempted to be set
+	 * by matching a descriptive port name to the keyword given here. See
+	 * {@link #getPortMatching(String descriptor)}.
+	 * 
+	 * @param keyword
+	 *            A keyword of a serial port description to find a match with
+	 */
+	public SerialDevice(String keyword) {
+		setPortMatching(keyword);
 	}
 
-	public SerialDevice(String description, int baudRate) {
-		setPortMatching(description);
+	/**
+	 * Creates a new serial device with a keyword-matched port and a given baud rate. The
+	 * serial device's port will be attempted to be set by matching a descriptive port
+	 * name to the keyword given here. See {@link #getPortMatching(String descriptor)}.
+	 * 
+	 * @param keyword
+	 *            A keyword of a serial port description to find a match with
+	 * @param baudRate
+	 *            The desired baud rate for this serial port
+	 */
+	public SerialDevice(String keyword, int baudRate) {
+		setPortMatching(keyword);
 		setBaudRate(baudRate);
 	}
 
-	public SerialPort getPortMatching(String description) {
+	/**
+	 * Iterates through a list of all available serial ports on the machine, checking the
+	 * descriptive port name of each one for a match with the given keyword.
+	 * 
+	 * @param keyword
+	 *            - A keyword of a serial port description to find a match with. The keyword
+	 *            can be simply a word or few identifying characters that could be found
+	 *            within the port description. Match-checking is case insensitive.
+	 * @return The first serial port found with a matching description.
+	 * @throws NoSuchElementException if no matching port is found.
+	 */
+	public SerialPort getPortMatching(String keyword) {
 		String descriptivePortName;
 
 		for (SerialPort port : SerialPort.getCommPorts()) {
 			descriptivePortName = port.getDescriptivePortName();
-			if (descriptivePortName.matches("(?i).*" + description + ".*")) {
-				System.out.println("Found " + descriptivePortName);
+			if (descriptivePortName.matches("(?i).*" + keyword + ".*")) {
+				System.out.println("Found " + descriptivePortName +".");
 				return port;
 			}
 		}
-		throw new NoSuchElementException("ERROR: No port with description matching '" + description + "' found!");
+		
+		throw new NoSuchElementException("ERROR: No port with description matching '" + keyword + "' found!");
 	}
 
 	public void setPortMatching(String description) {

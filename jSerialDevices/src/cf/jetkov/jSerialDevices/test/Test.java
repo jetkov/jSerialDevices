@@ -1,4 +1,4 @@
-package cf.jetkov.jSerialDevices.examples;
+package cf.jetkov.jSerialDevices.test;
 
 import com.fazecast.jSerialComm.*;
 
