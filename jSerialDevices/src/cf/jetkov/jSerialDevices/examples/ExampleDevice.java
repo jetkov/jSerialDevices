@@ -1,4 +1,4 @@
-package cf.jetkov.jSerialDevices.test;
+package cf.jetkov.jSerialDevices.examples;
 
 import java.io.PrintWriter;
 import java.util.Scanner;

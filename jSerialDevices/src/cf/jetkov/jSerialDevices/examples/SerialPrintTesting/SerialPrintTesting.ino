@@ -6,12 +6,14 @@ void setup() {
 int max = 1000;
 
 void loop() {
+
+//delay(500);
   
   int x = random(max);
   int y = random(max);
 
   char buf[12];
 
-  sprintf(buf, "<%d,%d>/", x, y);
+  sprintf(buf, "<%d,%d>", x, y);
   Serial.print(buf);
 }

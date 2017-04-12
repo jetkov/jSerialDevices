@@ -99,6 +99,27 @@ public class Arduino extends SerialDevice {
 
 		return recieved;
 	}
+	
+	public String serialRead(int tokens, String delimiter) {
+		// serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING,
+		// 0, 0);
+
+		String recieved = "";
+		Scanner scan = new Scanner(serialPort.getInputStream());
+		
+		scan.useDelimiter(delimiter);
+
+		try {
+			for (int i = 0; i <= tokens && scan.hasNext(); i++) {
+				recieved += (scan.next());
+			}
+			scan.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return recieved;
+	}
 
 	@Override
 	public void serialWrite(String strng) {
