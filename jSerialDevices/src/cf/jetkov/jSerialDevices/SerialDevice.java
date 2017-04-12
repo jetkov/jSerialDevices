@@ -208,5 +208,15 @@ public abstract class SerialDevice {
 	 *            - A String to send to the device
 	 */
 	public abstract void serialWrite(String strng);
+	
+	/**
+	 * Prints out a list of all available serial ports on the machine.
+	 */
+	public static void printSerialPorts() {
+		for (SerialPort port : SerialPort.getCommPorts()) {
+			System.out.print(port.getDescriptivePortName() + ": ");
+			System.out.println(port.getSystemPortName());
+		}
+	}
 
 }

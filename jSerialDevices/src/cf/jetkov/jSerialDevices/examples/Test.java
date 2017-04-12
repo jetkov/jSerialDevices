@@ -2,13 +2,11 @@ package cf.jetkov.jSerialDevices.examples;
 
 import com.fazecast.jSerialComm.*;
 
+import cf.jetkov.jSerialDevices.SerialDevice;
+
 public class Test {
 	
 	public static void main(String[] args) {
-		for (SerialPort port : SerialPort.getCommPorts()) {
-			System.out.println(port.getDescriptivePortName());
-			System.out.println(port.getSystemPortName());
-			System.out.println();
-		}
+		SerialDevice.printSerialPorts();
 	}
 }
