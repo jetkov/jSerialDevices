@@ -13,11 +13,20 @@ public class ReadTesting {
 		String x;
 		String y;
 		
-		Arduino Arduino = new Arduino(9600); //enter the port name here, and ensure that Arduino is connected, otherwise exception will be thrown.
-		Arduino.openPort();
+		Arduino arduino = new Arduino(9600); //enter the port name here, and ensure that Arduino is connected, otherwise exception will be thrown.
+		arduino.openPort();
+		
+		
+		
 		while (true) {
-			String recieved = Arduino.serialRead(1);
-			System.out.println(recieved + "\n");
+			try {
+			Scanner scan = new Scanner(arduino.getSerialPort().getInputStream());
+			scan.useDelimiter("/");
+			while (scan.hasNext()) System.out.println(scan.next());
+			scan.close();
+			} catch (Exception e) {
+				
+			}
 			
 			
 //			System.out.println((recieved.substring(recieved.lastIndexOf("X") + 1)));
