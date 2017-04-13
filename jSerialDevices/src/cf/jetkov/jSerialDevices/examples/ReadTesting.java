@@ -1,9 +1,5 @@
 package cf.jetkov.jSerialDevices.examples;
 
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import cf.jetkov.jSerialDevices.Arduino;
 
 public class ReadTesting {
