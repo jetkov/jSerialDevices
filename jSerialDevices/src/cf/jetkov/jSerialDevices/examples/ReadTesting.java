@@ -19,29 +19,22 @@ public class ReadTesting {
 												// exception will be thrown.
 		arduino.openPort();
 
-		Scanner scan;
-		
-		Pattern pattern = Pattern.compile("\\<(.*?),(.*?)\\>");
-		Matcher matcher;
-
 		while (arduino.openPort()) {
-	
+
 			buf = arduino.serialRead(100);
-			String[] coord = buf.split("/");
-			
-			for (String xy : coord) {
-				if (xy.matches("\\<(.*?),(.*?)\\>")) {
-					//System.out.println(xy);
-					x = Integer.valueOf((xy.substring(xy.indexOf("<") + 1, xy.indexOf(","))));
-					y = Integer.valueOf((xy.substring(xy.indexOf(",") + 1, xy.indexOf(">"))));
+			String[] coords = buf.split("/");
+
+			for (String coord : coords) {
+				if (coord.matches("\\<(.*?),(.*?)\\>")) {
+					// System.out.println(xy);
+					x = Integer.valueOf((coord.substring(coord.indexOf("<") + 1, coord.indexOf(","))));
+					y = Integer.valueOf((coord.substring(coord.indexOf(",") + 1, coord.indexOf(">"))));
 					System.out.printf("[%d,%d]\n", x, y);
 				}
 			}
-			
-			
 
 		}
-		
+
 		arduino.closePort();
 
 	}
