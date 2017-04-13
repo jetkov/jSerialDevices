@@ -10,7 +10,7 @@ public class ReadTesting {
 
 	public static void main(String[] args) {
 
-		String coord = "";
+		String buf = "";
 		int x = 0, y = 0;
 
 		Arduino arduino = new Arduino(9600); // enter the port name here, and
@@ -20,33 +20,29 @@ public class ReadTesting {
 		arduino.openPort();
 
 		Scanner scan;
+		
+		Pattern pattern = Pattern.compile("\\<(.*?),(.*?)\\>");
+		Matcher matcher;
 
-		while (true) {
-			try {
-				scan = new Scanner(arduino.getSerialPort().getInputStream());
-				scan.useDelimiter("/");
-				while (scan.hasNext()) coord += scan.next();
-				scan.close();
-			} catch (Exception e) {
-
-			}
-
-			if (coord.matches("\\<(.*?),(.*?)\\>")) {
-				x = Integer.valueOf((coord.substring(coord.indexOf("<") + 1, coord.indexOf(","))));
-				y = Integer.valueOf((coord.substring(coord.indexOf(",") + 1, coord.indexOf(">"))));
-				coord = "";
+		while (arduino.openPort()) {
+	
+			buf = arduino.serialRead(100);
+			String[] coord = buf.split("/");
+			
+			for (String xy : coord) {
+				if (xy.matches("\\<(.*?),(.*?)\\>")) {
+					//System.out.println(xy);
+					x = Integer.valueOf((xy.substring(xy.indexOf("<") + 1, xy.indexOf(","))));
+					y = Integer.valueOf((xy.substring(xy.indexOf(",") + 1, xy.indexOf(">"))));
+					System.out.printf("[%d,%d]\n", x, y);
+				}
 			}
 			
-			System.out.printf("[%d,%d]\n", x, y);
+			
 
-			// System.out.println((recieved.substring(recieved.lastIndexOf("X")
-			// + 1)));
-			// System.out.println((recieved.substring(recieved.lastIndexOf("Y")
-			// + 1)));
-			//
-			// System.out.println("(" + x + ", " + y + ")");
 		}
-		// Arduino.closePort();
+		
+		arduino.closePort();
 
 	}
 
