@@ -20,6 +20,6 @@ void loop() {
 
   // serially print the results
   char buf[12];
-  sprintf(buf, "<%d,%d>", x, y);
+  sprintf(buf, "<%d,%d>/", x, y);
   Serial.print(buf);
 }
