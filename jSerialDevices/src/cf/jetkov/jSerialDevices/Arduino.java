@@ -6,9 +6,9 @@ import java.util.Scanner;
 import com.fazecast.jSerialComm.SerialPort;
 
 /**
- * Allows for communications to and from a USB connected arduino device in a
- * very abstracted and easily understandable fashion. Extends the
- * {@link SerialDevice} class, utilizing the jSerialComm library.
+ * Allows for communications to and from a USB connected arduino device in a very
+ * abstracted and easily understandable fashion. Extends the {@link SerialDevice} class,
+ * utilizing the jSerialComm library.
  * 
  * @author Alex Petkovic
  * @version 1.0.0b
@@ -19,9 +19,9 @@ public class Arduino extends SerialDevice {
 	private SerialPort serialPort;
 
 	/**
-	 * Creates a new arduino. By default, chooses a serial port that matches an
-	 * 'arduino' (for windows) or 'ACM' (on linux) keyword. Set's the arduino's
-	 * private serial port to serial device class's serial port.
+	 * Creates a new arduino. By default, chooses a serial port that matches an 'arduino'
+	 * (for windows) or 'ACM' (on linux) keyword. Set's the arduino's private serial port
+	 * to serial device class's serial port.
 	 */
 	public Arduino() {
 		super("(arduino|ACM)");
@@ -29,12 +29,12 @@ public class Arduino extends SerialDevice {
 	}
 
 	/**
-	 * Creates a new arduino. By default, chooses a serial port that matches an
-	 * 'arduino' (for windows) or 'ACM' (on linux) keyword--and sets the baud
-	 * rate as specified. Set's the arduino's private serial port to serial
-	 * device class's serial port.
+	 * Creates a new arduino. By default, chooses a serial port that matches an 'arduino'
+	 * (for windows) or 'ACM' (on linux) keyword--and sets the baud rate as specified.
+	 * Set's the arduino's private serial port to serial device class's serial port.
 	 * 
-	 * @param baudRate - The desired baud rate for this serial port
+	 * @param baudRate
+	 *            - The desired baud rate for this serial port
 	 */
 	public Arduino(int baudRate) {
 		super("(arduino|ACM)", baudRate);
@@ -42,10 +42,11 @@ public class Arduino extends SerialDevice {
 	}
 
 	/**
-	 * Creates a new arduino, and tries to set the serial port to a port with a 
+	 * Creates a new arduino, and tries to set the serial port to a port with a
 	 * description pr system name/path matching the given keyword.
 	 * 
-	 * @param keyword - A keyword to match to a serial port description
+	 * @param keyword
+	 *            - A keyword to match to a serial port description
 	 */
 	public Arduino(String keyword) {
 		super(keyword);
@@ -53,12 +54,14 @@ public class Arduino extends SerialDevice {
 	}
 
 	/**
-	 * Creates a new arduino, and tries to set the serial port to a port with a 
-	 * description or system name/path matching the given keyword. Sets the baud 
-	 * rate of the serial port to the specified value.
+	 * Creates a new arduino, and tries to set the serial port to a port with a
+	 * description or system name/path matching the given keyword. Sets the baud rate of
+	 * the serial port to the specified value.
 	 * 
-	 * @param keyword - A keyword to match to a serial port description
-	 * @param baudRate - The desired baud rate for this serial port
+	 * @param keyword
+	 *            - A keyword to match to a serial port description
+	 * @param baudRate
+	 *            - The desired baud rate for this serial port
 	 */
 	public Arduino(String keyword, int baudRate) {
 		super(keyword, baudRate);
@@ -82,15 +85,24 @@ public class Arduino extends SerialDevice {
 
 	@Override
 	public String serialRead(int tokens) {
-		// serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING,
-		// 0, 0);
+		return serialRead(tokens, "\n", " ");
+	}
+	
+	public String serialRead(int tokens, String separator) {
+		return serialRead(tokens, separator, " ");
+	}
+
+	public String serialRead(int tokens, String separator, String delimiter) {
+		serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
 
 		String recieved = "";
 		Scanner scan = new Scanner(serialPort.getInputStream());
 
+		scan.useDelimiter(delimiter);
+
 		try {
 			for (int i = 0; i <= tokens && scan.hasNext(); i++) {
-				recieved += (scan.next() + "\n");
+				recieved += (scan.next() + separator);
 			}
 			scan.close();
 		} catch (Exception e) {
@@ -100,26 +112,7 @@ public class Arduino extends SerialDevice {
 		return recieved;
 	}
 	
-	public String serialRead(int tokens, String delimiter) {
-		// serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING,
-		// 0, 0);
-
-		String recieved = "";
-		Scanner scan = new Scanner(serialPort.getInputStream());
-		
-		scan.useDelimiter(delimiter);
-
-		try {
-			for (int i = 0; i <= tokens && scan.hasNext(); i++) {
-				recieved += (scan.next());
-			}
-			scan.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return recieved;
-	}
+	
 
 	@Override
 	public void serialWrite(String strng) {
