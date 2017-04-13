@@ -1,10 +1,5 @@
 package cf.jetkov.jSerialDevices;
 
-import java.io.PrintWriter;
-import java.util.Scanner;
-
-import com.fazecast.jSerialComm.SerialPort;
-
 /**
  * Allows for communications to and from a USB connected arduino device in a
  * very abstracted and easily understandable fashion. Extends the
@@ -15,8 +10,6 @@ import com.fazecast.jSerialComm.SerialPort;
  *
  */
 public class ArduinoCH340 extends Arduino {
-
-	private SerialPort serialPort;
 
 	/**
 	 * Creates a new arduino. By default, chooses a serial port that matches an
