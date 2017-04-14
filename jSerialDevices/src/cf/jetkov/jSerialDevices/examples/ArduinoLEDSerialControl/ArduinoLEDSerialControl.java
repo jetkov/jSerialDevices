@@ -16,17 +16,16 @@ public class ArduinoLEDSerialControl {
 		
 		Scanner scan = new Scanner(System.in);
 		Arduino arduino = new Arduino(); // defaults to 9600 baud
+		char input;
 
 		arduino.openPort();
 
 		System.out.println("Please enter 1 or 0 (LED on or off): \n");
 
-		char input = scan.nextLine().charAt(0);
-
-		while (arduino.openPort()) {
-			arduino.serialWrite(input);
+		do {
 			input = scan.nextLine().charAt(0);
-		}
+			arduino.serialWrite(input);
+		} while (arduino.openPort());
 
 		scan.close();
 		arduino.closePort();
