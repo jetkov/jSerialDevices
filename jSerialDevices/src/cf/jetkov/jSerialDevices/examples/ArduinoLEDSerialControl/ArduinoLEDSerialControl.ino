@@ -1,7 +1,7 @@
 char data;     // variable to store incoming data from JAVA 
-int LED = 10;  // Phyiscial pin LED is on
+int LED = 10;  // Phyiscal pin LED is on
 
-// Setup port and serial comms
+// Setup port and serial communication
 void setup() {
   pinMode(LED, OUTPUT);
   Serial.begin(9600);
@@ -17,11 +17,12 @@ void loop() {
     data = Serial.read();
   
     // And sets the LED accordingly
-    if(data == '1') 
-      digitalWrite(12,HIGH);
-    else if(data == '0') 
-      digitalWrite(12,LOW);
-    else 
-      digitalWrite(12,HIGH);
+    if (data == '1') {
+      digitalWrite(12, HIGH);
+    } else if (data == '0') {
+      digitalWrite(12, LOW);
+    } else {
+      digitalWrite(12, HIGH);
+    }
   }
 }
