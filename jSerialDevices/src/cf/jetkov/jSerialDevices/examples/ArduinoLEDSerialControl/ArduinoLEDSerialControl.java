@@ -8,7 +8,7 @@ import cf.jetkov.jSerialDevices.Arduino;
  * A simple example of serial communication, using a java console input to control the
  * state of an LED wired to the Arduino. 
  * 
- * @author Alex
+ * @author Alex Petkovic
  *
  */
 public class ArduinoLEDSerialControl {
