@@ -19,8 +19,7 @@ void loop() {
 
   if (data.length() > 0) {
       Serial.println(data);
-            
-      servo.write(data.toInt());
+      servo.writeMicroseconds(data.toInt());
       data = "";
   }
 }
